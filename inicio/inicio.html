@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="inicio.css">
+</head>
+<body>
+    <div class="login-container">
+        <h1>Iniciar Sesión</h1>
+        <form id="loginForm">
+            <input type="email" id="email" placeholder="Correo electrónico" required>
+            <input type="password" id="password" placeholder="Contraseña" required>
+            <button type="submit">Iniciar Sesión</button>
+        </form>
+
+        <!-- Mensaje de éxito que aparece después del login -->
+        <p id="mensaje-exito" style="color: green; font-weight: bold;"></p>
+        
+        <p id="error-message" style="color: red;"></p>
+    </div>
+
+    <!-- Incluir los scripts de Firebase -->
+    <script type="module" src="inicio.js"></script>
+</body>
+</html>
