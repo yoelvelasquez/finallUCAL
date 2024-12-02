@@ -86,7 +86,7 @@ async function cargarExamenes() {
                     const examenID = examenDoc.id;
                     localStorage.setItem("examenSeleccionado", examenID);
                     await cargarPreguntas(examenID);
-                    window.location.href = ".responder.html";
+                    window.location.href = "responder.html";
                 });
 
                 examenesContainer.appendChild(examenElement);
@@ -194,9 +194,8 @@ async function calcularPromedio() {
     }
 }
 
-// Event listener para calcular el promedio
 document.getElementById("calcular-promedio").addEventListener("click", calcularPromedio);
 
-// Llamar a la función para cargar los exámenes y los datos cuando la página se cargue
+
 document.addEventListener("DOMContentLoaded", cargarExamenes);
 

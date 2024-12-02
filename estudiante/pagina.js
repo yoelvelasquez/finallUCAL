@@ -84,5 +84,4 @@ async function cargarDatosEstudiante() {
     }
 }
 
-// Llamar a la función principal
 cargarDatosEstudiante();

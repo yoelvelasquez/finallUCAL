@@ -60,8 +60,8 @@ async function obtenerCursosYCalificaciones(profesorID) {
         if (cursoDoc.exists()) {
           cursosDetalles.push({
             id: cursoID,
-            nombre: cursoDoc.data().nombre,
-            descripcion: cursoDoc.data().descripcion
+            nombre: cursoDoc.data().nombre || "Nombre no disponible", // Validar el nombre
+            descripcion: cursoDoc.data().descripcion || "Descripción no disponible" // Validar descripción
           });
         }
       }
@@ -76,7 +76,6 @@ async function obtenerCursosYCalificaciones(profesorID) {
 
           // Mostrar el promedio ya almacenado en la base de datos
           let promedio = calificacionesCurso.promedio || "No disponible";
-          console.log(`Promedio para el curso ${cursoID}:`, promedio);
 
           // Ordenar los exámenes por su nombre
           const exámenesOrdenados = Object.entries(calificacionesCurso)
@@ -86,21 +85,14 @@ async function obtenerCursosYCalificaciones(profesorID) {
           // Verificar el estado de cada examen
           const exámenesConEstado = exámenesOrdenados.map(([examen, examenData]) => {
             const puntaje = examenData.puntaje;
-            console.log(`Puntaje para el examen ${examen}:`, puntaje);
             const puntajeNum = Number(puntaje);
-            if (isNaN(puntajeNum)) {
-              console.error(`Error: El puntaje "${puntaje}" no es un número válido`);
-            }
-            const estadoExamen = puntajeNum >= 70 ? "Objetivo logrado" : "Objetivo no logrado";
+            const estadoExamen = !isNaN(puntajeNum) && puntajeNum >= 70 ? "Objetivo logrado" : "Objetivo no logrado";
             return { examen, puntaje: puntajeNum, estadoExamen };
           });
 
-          // verificar promediod
+          // Verificar estado del promedio
           const promedioNum = Number(promedio);
-          if (isNaN(promedioNum)) {
-            console.error(`Error: El promedio "${promedio}" no es un número válido`);
-          }
-          const estadoPromedio = promedioNum >= 70 ? "Aprobado" : "Desaprobado";
+          const estadoPromedio = !isNaN(promedioNum) && promedioNum >= 70 ? "Aprobado" : "Desaprobado";
 
           calificaciones.push({
             cursoID: cursoID,
@@ -145,6 +137,7 @@ async function obtenerCursosYCalificaciones(profesorID) {
 
           // Mostrar los exámenes ordenados con su estado
           calificacion.calificaciones.forEach(({ examen, puntaje, estadoExamen }) => {
+            if (!examen || puntaje === undefined) return; // Ignorar exámenes sin datos
             const examenElement = document.createElement("p");
             examenElement.textContent = `${examen}: ${puntaje} - ${estadoExamen}`;
             calificacionesElement.appendChild(examenElement);
@@ -168,10 +161,9 @@ async function obtenerCursosYCalificaciones(profesorID) {
   }
 }
 
-// Suponiendo que tienes un formulario de inicio de sesión o un proceso de autenticación que determina el profesorID
-// Puedes usar `localStorage.getItem("profesorID")` o cualquier otro método para obtener el profesorID
-const profesorID = localStorage.getItem("profesorID");  // O el ID dinámico del profesor autenticado
+const profesorID = localStorage.getItem("profesorID");
 obtenerCursosYCalificaciones(profesorID);
+
 
 
 
