@@ -68,8 +68,8 @@ async function cargarDatosEstudiante() {
                 //que se pueda dar click al nombre xd
                 cursoElement.addEventListener("click", () => {
                     localStorage.setItem("cursoSeleccionado", cursoId);
-                    localStorage.setItem("nombreCurso", cursoData.nombre); // Guardamos también el nombre del curso
-                    window.location.href = "../examenes/examen.html"; // Redirigimos a la página de exámenes
+                    localStorage.setItem("nombreCurso", cursoData.nombre);
+                    window.location.href = "../examenes/examen.html";
                 });
                 
 
@@ -86,4 +86,3 @@ async function cargarDatosEstudiante() {
 
 // Llamar a la función principal
 cargarDatosEstudiante();
-

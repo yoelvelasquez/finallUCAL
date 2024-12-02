@@ -11,7 +11,7 @@ const firebaseConfig = {
     messagingSenderId: "715522120394",
     appId: "1:715522120394:web:135a1688f72ec0f2a2f233",
     measurementId: "G-BSK6289N9N"
-  };
+};
 
 // Inicializar Firebase
 const app = initializeApp(firebaseConfig);
@@ -26,7 +26,7 @@ async function iniciarSesion() {
     console.log("Contraseña ingresada: ", password);
 
     try {
-        // Verificar si es estudiante
+        // Verificar si es un estudiante
         const estudianteQuery = query(collection(db, "estudiantes"), where("correo", "==", correo));
         const estudianteSnapshot = await getDocs(estudianteQuery);
 
@@ -37,13 +37,13 @@ async function iniciarSesion() {
                 console.log("Inicio de sesión exitoso como estudiante");
                 document.getElementById("mensaje-exito").innerText = "Has iniciado sesión correctamente como estudiante.";
 
-                // GUARDAR EN EL LOCAL
+                // Guardar en el localStorage
                 localStorage.setItem("correo", correo);
                 localStorage.setItem("rol", "estudiante");
                 localStorage.setItem("estudianteID", estudianteSnapshot.docs[0].id);
 
-                document.getElementById("mensaje-exito").innerText = "Has iniciado sesión correctamente como estudiante.";
 
+                
                 // Redirigir a la página de estudiante
                 setTimeout(() => {
                     window.location.href = "../estudiante/pagina.html";
@@ -56,7 +56,7 @@ async function iniciarSesion() {
             }
         }
 
-        // Verificar si eS EL PROFE
+        // Verificar si es un profesor
         const profesorQuery = query(collection(db, "profesores"), where("correo", "==", correo));
         const profesorSnapshot = await getDocs(profesorQuery);
 
@@ -67,10 +67,12 @@ async function iniciarSesion() {
                 console.log("Inicio de sesión exitoso como profesor");
                 document.getElementById("mensaje-exito").innerText = "Has iniciado sesión correctamente como profesor.";
 
+                // Guardar en el localStorage
                 localStorage.setItem("correo", correo);
                 localStorage.setItem("rol", "profesor");
+                localStorage.setItem("profesorID", profesorSnapshot.docs[0].id); // Guardamos el ID del profesor
 
-                // Redirigir a la página de profesor NO HAY
+                // Redirigir a la página de profesor
                 setTimeout(() => {
                     window.location.href = "../profesor/profe.html";
                 }, 2000);
@@ -97,3 +99,4 @@ loginForm.addEventListener("submit", (event) => {
     event.preventDefault();
     iniciarSesion();
 });
+

@@ -3,13 +3,13 @@ import { getFirestore, doc, getDoc, collection, getDocs } from "https://www.gsta
 
 // Configuración de Firebase
 const firebaseConfig = {
-    apiKey: "AIzaSyD5N3DJJlEYnf2mGa5BTSourXERCyUB4G0",
-    authDomain: "proyectoucal.firebaseapp.com",
-    projectId: "proyectoucal",
-    storageBucket: "proyectoucal.firebasestorage.app",
-    messagingSenderId: "715522120394",
-    appId: "1:715522120394:web:135a1688f72ec0f2a2f233",
-    measurementId: "G-BSK6289N9N"
+  apiKey: "AIzaSyD5N3DJJlEYnf2mGa5BTSourXERCyUB4G0",
+  authDomain: "proyectoucal.firebaseapp.com",
+  projectId: "proyectoucal",
+  storageBucket: "proyectoucal.firebasestorage.app",
+  messagingSenderId: "715522120394",
+  appId: "1:715522120394:web:135a1688f72ec0f2a2f233",
+  measurementId: "G-BSK6289N9N"
 };
 
 const app = initializeApp(firebaseConfig);
@@ -49,6 +49,9 @@ async function obtenerCursosYCalificaciones(profesorID) {
       // Filtrar los cursos que el estudiante tiene asignados y que el profesor imparte
       const cursosFiltrados = cursosAsignados.filter(curso => cursosImpartidos.includes(curso));
 
+      // Si el estudiante no tiene cursos asignados por este profesor, omitirlo
+      if (cursosFiltrados.length === 0) return;
+
       // Obtener los detalles de los cursos desde la colección "cursos"
       const cursosDetalles = [];
       for (let cursoID of cursosFiltrados) {
@@ -73,18 +76,18 @@ async function obtenerCursosYCalificaciones(profesorID) {
 
           // Mostrar el promedio ya almacenado en la base de datos
           let promedio = calificacionesCurso.promedio || "No disponible";
-          console.log(`Promedio para el curso ${cursoID}:`, promedio); // Depuración del promedio
+          console.log(`Promedio para el curso ${cursoID}:`, promedio);
 
-          // Ordenar los exámenes por su nombre (si es necesario)
+          // Ordenar los exámenes por su nombre
           const exámenesOrdenados = Object.entries(calificacionesCurso)
-            .filter(([key, value]) => key !== "promedio") // Filtrar el campo "promedio"
-            .sort(([examenA], [examenB]) => examenA.localeCompare(examenB)); // Ordenar alfabéticamente
+            .filter(([key, value]) => key !== "promedio")
+            .sort(([examenA], [examenB]) => examenA.localeCompare(examenB));
 
           // Verificar el estado de cada examen
           const exámenesConEstado = exámenesOrdenados.map(([examen, examenData]) => {
-            const puntaje = examenData.puntaje; // Acceder al puntaje dentro del mapa del examen
+            const puntaje = examenData.puntaje;
             console.log(`Puntaje para el examen ${examen}:`, puntaje);
-            const puntajeNum = Number(puntaje);  // Convertir puntaje a número
+            const puntajeNum = Number(puntaje);
             if (isNaN(puntajeNum)) {
               console.error(`Error: El puntaje "${puntaje}" no es un número válido`);
             }
@@ -92,7 +95,7 @@ async function obtenerCursosYCalificaciones(profesorID) {
             return { examen, puntaje: puntajeNum, estadoExamen };
           });
 
-          // Verificar el estado del promedio
+          // verificar promediod
           const promedioNum = Number(promedio);
           if (isNaN(promedioNum)) {
             console.error(`Error: El promedio "${promedio}" no es un número válido`);
@@ -108,7 +111,7 @@ async function obtenerCursosYCalificaciones(profesorID) {
         }
       }
 
-      // Mostrar los resultados en la interfaz de usuario
+      // Mostrar los resultados
       const cursosContainer = document.getElementById("cursosContainer");
 
       // Crear un contenedor para el estudiante
@@ -165,7 +168,10 @@ async function obtenerCursosYCalificaciones(profesorID) {
   }
 }
 
-// Llamada a la función para obtener y mostrar los datos (ejemplo de uso)
-obtenerCursosYCalificaciones("profesor_1");
+// Suponiendo que tienes un formulario de inicio de sesión o un proceso de autenticación que determina el profesorID
+// Puedes usar `localStorage.getItem("profesorID")` o cualquier otro método para obtener el profesorID
+const profesorID = localStorage.getItem("profesorID");  // O el ID dinámico del profesor autenticado
+obtenerCursosYCalificaciones(profesorID);
+
 
 

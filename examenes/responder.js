@@ -1,4 +1,4 @@
-// Importar Firebase y Firestore
+
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js";
 import { getFirestore, doc, collection, getDocs, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore.js";
 
@@ -22,7 +22,7 @@ async function cargarPreguntas() {
     const preguntasContainer = document.getElementById("preguntas-container");
     preguntasContainer.innerHTML = "Cargando preguntas...";
 
-    const examenID = localStorage.getItem("examenSeleccionado"); // Asegúrate que se guarda el ID del examen seleccionado
+    const examenID = localStorage.getItem("examenSeleccionado");
     const cursoID = localStorage.getItem("cursoSeleccionado");
     const estudianteID = localStorage.getItem("estudianteID");
 
@@ -94,7 +94,7 @@ async function cargarPreguntas() {
                     alternativaContainer.appendChild(document.createElement("br"));
                 });
             } else {
-                // Si no hay alternativas, mostrar un mensaje
+                // Si no hay alternativas
                 alternativaContainer.innerHTML = "<p>No hay alternativas disponibles para esta pregunta.</p>";
             }
 
@@ -107,7 +107,7 @@ async function cargarPreguntas() {
                 if (selectedAnswer) {
                     console.log("Respuesta seleccionada:", selectedAnswer.value);
                     if (selectedAnswer.value === preguntaData.respuestaCorrecta) {
-                        puntaje += 20; // Asignar 20 puntos por respuesta correcta
+                        puntaje += 20;
                         console.log("Respuesta correcta. Puntaje actual:", puntaje);
                     } else {
                         console.log("Respuesta incorrecta.");
@@ -142,4 +142,5 @@ async function cargarPreguntas() {
 }
 
 cargarPreguntas();
+
 
