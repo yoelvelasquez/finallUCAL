@@ -1,29 +1,106 @@
+/* Estilos generales */
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f6f9;
     margin: 0;
     padding: 0;
-    background-color: #f0f0f0;
 }
 
 .main-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
     padding: 20px;
 }
 
+/* Header con información del estudiante */
+header {
+    text-align: center;
+    margin-bottom: 30px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #ccc;
+    position: relative;
+}
+
+header .header-left {
+    position: absolute;
+    top: 0;
+    left: 20px;
+    font-size: 1rem;
+    color: #555;
+}
+
 h1 {
+    font-size: 2rem;
     color: #333;
+    margin: 0;
 }
 
-#examenes-container {
-    margin-top: 20px;
+/* Configuración del layout principal */
+.layout {
     display: grid;
-    gap: 10px;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: 1fr 3fr 1fr; /* Columnas para imágenes y contenido */
+    gap: 20px;
+    align-items: start;
 }
 
+/* Imágenes laterales */
+.side-image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.side-image img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px; /* Bordes redondeados opcionales */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra para las imágenes */
+}
+
+/* Contenedor de los exámenes */
+#examenes-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    padding-top: 20px;
+}
+
+/* Estilo de los exámenes */
 .examen-item {
-    background: white;
-    border: 1px solid #ddd;
+    background: #fff;
+    padding: 20px;
     border-radius: 8px;
-    padding: 15px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    cursor: pointer;
+}
+
+.examen-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Estilo de la carga */
+.loading {
+    text-align: center;
+    font-size: 1.5rem;
+    color: #777;
+}
+
+/* Botones */
+button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #45a049;
 }

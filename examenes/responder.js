@@ -1,6 +1,6 @@
 // Importar Firebase y Firestore
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js";
-import { getFirestore, doc, collection, getDocs, updateDoc } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore.js";
+import { getFirestore, doc, collection, getDocs, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore.js";
 
 // Configuración de Firebase
 const firebaseConfig = {
@@ -22,7 +22,7 @@ async function cargarPreguntas() {
     const preguntasContainer = document.getElementById("preguntas-container");
     preguntasContainer.innerHTML = "Cargando preguntas...";
 
-    const examenID = localStorage.getItem("examenID");
+    const examenID = localStorage.getItem("examenSeleccionado"); // Asegúrate que se guarda el ID del examen seleccionado
     const cursoID = localStorage.getItem("cursoSeleccionado");
     const estudianteID = localStorage.getItem("estudianteID");
 
@@ -38,10 +38,23 @@ async function cargarPreguntas() {
     console.log("Estudiante ID:", estudianteID);
 
     try {
-        // Referencia al examen y sus preguntas
+        // Verificar que el examen exista en Firestore
         const examenRef = doc(db, "cursos", cursoID, "examenes", examenID);
+        const examenDoc = await getDoc(examenRef);
+
+        if (!examenDoc.exists()) {
+            console.error("No se encontró el examen en Firestore.");
+            preguntasContainer.innerHTML = "No se encontró el examen en la base de datos.";
+            return;
+        }
+
+        console.log("Examen encontrado:", examenDoc.data());
+
+        // Obtener las preguntas
         const preguntasRef = collection(examenRef, "preguntas");
         const preguntasSnapshot = await getDocs(preguntasRef);
+
+        console.log("Número de preguntas:", preguntasSnapshot.size);
 
         if (preguntasSnapshot.empty) {
             preguntasContainer.innerHTML = "No hay preguntas disponibles para este examen.";
@@ -51,11 +64,14 @@ async function cargarPreguntas() {
         // Limpiar contenido antes de mostrar las nuevas preguntas
         preguntasContainer.innerHTML = "";
 
-        let puntaje = 0; // Variable para almacenar el puntaje
+        let puntaje = 0;
 
         // Iterar a través de las preguntas y sus alternativas
         preguntasSnapshot.forEach((preguntaDoc) => {
             const preguntaData = preguntaDoc.data();
+            console.log("Pregunta:", preguntaData.pregunta);
+            console.log("Alternativas:", preguntaData.alternativa);
+
             const preguntaElemento = document.createElement("div");
             preguntaElemento.className = "pregunta-item";
 
@@ -69,8 +85,8 @@ async function cargarPreguntas() {
                     const label = document.createElement("label");
                     const input = document.createElement("input");
                     input.type = "radio";
-                    input.name = `pregunta-${preguntaDoc.id}`; // Asegurarse de que el nombre sea único por pregunta
-                    input.value = alternativa; // Valor de la alternativa
+                    input.name = `pregunta-${preguntaDoc.id}`; 
+                    input.value = alternativa;
 
                     label.appendChild(input);
                     label.appendChild(document.createTextNode(alternativa));
@@ -89,8 +105,12 @@ async function cargarPreguntas() {
             preguntaElemento.addEventListener("change", () => {
                 const selectedAnswer = document.querySelector(`input[name="pregunta-${preguntaDoc.id}"]:checked`);
                 if (selectedAnswer) {
+                    console.log("Respuesta seleccionada:", selectedAnswer.value);
                     if (selectedAnswer.value === preguntaData.respuestaCorrecta) {
-                        puntaje++; // Incrementar el puntaje si la respuesta es correcta
+                        puntaje += 20; // Asignar 20 puntos por respuesta correcta
+                        console.log("Respuesta correcta. Puntaje actual:", puntaje);
+                    } else {
+                        console.log("Respuesta incorrecta.");
                     }
                 }
             });
@@ -100,15 +120,15 @@ async function cargarPreguntas() {
         const botonEnviar = document.createElement("button");
         botonEnviar.innerText = "Enviar Respuestas";
         botonEnviar.addEventListener("click", async () => {
-            // Guardar el puntaje en localStorage (si solo deseas mostrarlo)
+            // Guardar el puntaje en localStorage
             localStorage.setItem("puntaje", puntaje);
             alert(`Tu puntaje es: ${puntaje}`);
 
-            // Actualizar el puntaje dentro de la subcolección "calificaciones" del estudiante en Firebase
+            // Actualizar el puntaje en la subcolección de Firestore
             const estudianteRef = doc(db, "estudiantes", estudianteID);
-            const calificacionesRef = doc(estudianteRef, "calificaciones", cursoID); // Usamos el cursoID como el nombre del documento
+            const calificacionesRef = doc(estudianteRef, "calificaciones", cursoID);
             await updateDoc(calificacionesRef, {
-                [`${examenID}.puntaje`]: puntaje // Guardar el puntaje en el documento de la subcolección
+                [`${examenID}.puntaje`]: puntaje
             });
 
             alert(`Tu puntaje ha sido guardado en tu perfil.`);
@@ -121,6 +141,5 @@ async function cargarPreguntas() {
     }
 }
 
-// Ejecutar la función para cargar las preguntas al cargar la página
 cargarPreguntas();
 

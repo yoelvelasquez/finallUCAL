@@ -8,9 +8,34 @@
 </head>
 <body>
     <div class="main-container">
-        <h1 id="nombre-curso">Cargando curso...</h1>
-        <div id="examenes-container">Cargando exámenes...</div>
+        <header>
+            <div id="estudiante-info" class="header-left">Cargando estudiante...</div>
+            <h1 id="nombre-curso">Cargando curso...</h1>
+        </header>
+        <div class="layout">
+            <aside class="side-image left-image">
+                <img src="ruta-de-la-imagen-izquierda.jpg" alt="Imagen izquierda">
+            </aside>
+            <section id="examenes-container">
+                <div class="loading">Cargando exámenes...</div>
+            </section>
+            <aside class="side-image right-image">
+                <img src="ruta-de-la-imagen-derecha.jpg" alt="Imagen derecha">
+            </aside>
+        </div>
+        <!-- Botón para calcular el promedio -->
+        <div>
+            <button id="calcular-promedio">Calcular Promedio</button>
+        </div>
+        <!-- Contenedor para mostrar el promedio calculado -->
+        <div id="promedio-container">
+            <h3>Promedio: <span id="promedio-valor">Cargando...</span></h3>
+        </div>
+        <div>
+            <button id="btn-regresar">Regresar</button>
+        </div>
     </div>
     <script type="module" src="examen.js"></script>
 </body>
 </html>
+

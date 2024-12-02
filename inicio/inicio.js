@@ -26,7 +26,7 @@ async function iniciarSesion() {
     console.log("Contraseña ingresada: ", password);
 
     try {
-        // Verificar si el usuario está en la colección "estudiantes"
+        // Verificar si es estudiante
         const estudianteQuery = query(collection(db, "estudiantes"), where("correo", "==", correo));
         const estudianteSnapshot = await getDocs(estudianteQuery);
 
@@ -37,13 +37,13 @@ async function iniciarSesion() {
                 console.log("Inicio de sesión exitoso como estudiante");
                 document.getElementById("mensaje-exito").innerText = "Has iniciado sesión correctamente como estudiante.";
 
-                // Guardar el correo y rol en localStorage
+                // GUARDAR EN EL LOCAL
                 localStorage.setItem("correo", correo);
-                localStorage.setItem("rol", "estudiante"); // Guardar rol para uso futuro
+                localStorage.setItem("rol", "estudiante");
                 localStorage.setItem("estudianteID", estudianteSnapshot.docs[0].id);
 
                 document.getElementById("mensaje-exito").innerText = "Has iniciado sesión correctamente como estudiante.";
-                
+
                 // Redirigir a la página de estudiante
                 setTimeout(() => {
                     window.location.href = "../estudiante/pagina.html";
@@ -56,7 +56,7 @@ async function iniciarSesion() {
             }
         }
 
-        // Verificar si el usuario está en la colección "profesores"
+        // Verificar si eS EL PROFE
         const profesorQuery = query(collection(db, "profesores"), where("correo", "==", correo));
         const profesorSnapshot = await getDocs(profesorQuery);
 
@@ -67,13 +67,12 @@ async function iniciarSesion() {
                 console.log("Inicio de sesión exitoso como profesor");
                 document.getElementById("mensaje-exito").innerText = "Has iniciado sesión correctamente como profesor.";
 
-                // Guardar el correo y rol en localStorage
                 localStorage.setItem("correo", correo);
-                localStorage.setItem("rol", "profesor"); // Guardar rol para uso futuro
+                localStorage.setItem("rol", "profesor");
 
-                // Redirigir a la página de profesor
+                // Redirigir a la página de profesor NO HAY
                 setTimeout(() => {
-                    window.location.href = "../profesor/paginaP.html"; // Cambiar a la página del profesor
+                    window.location.href = "../profesor/profe.html";
                 }, 2000);
                 return;
             } else {
@@ -83,7 +82,7 @@ async function iniciarSesion() {
             }
         }
 
-        // Si no se encontró el usuario en ninguna colección
+        // Si no hay usuario
         console.log("El correo no está registrado en ninguna colección");
         alert("Correo no registrado.");
     } catch (error) {

@@ -1,8 +1,6 @@
-// main.js
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js";
 import { getFirestore, doc, getDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore.js";
 
-// Configuración de Firebase
 const firebaseConfig = {
     apiKey: "AIzaSyD5N3DJJlEYnf2mGa5BTSourXERCyUB4G0",
     authDomain: "proyectoucal.firebaseapp.com",
@@ -13,17 +11,12 @@ const firebaseConfig = {
     measurementId: "G-BSK6289N9N"
   };
 
-// Inicializar Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-
-
-
-
-// Función para cargar los datos del estudiante y renderizar cursos
+// cargar los datos del estudiante y cursos
 async function cargarDatosEstudiante() {
-    const correo = localStorage.getItem("correo"); // Obtenemos el correo desde localStorage
+    const correo = localStorage.getItem("correo");
     if (!correo) {
         alert("No se ha iniciado sesión. Redirigiendo...");
         window.location.href = "/inicio_sesion/login.html";
@@ -31,15 +24,15 @@ async function cargarDatosEstudiante() {
     }
 
     try {
-        // Obtener datos del estudiante
+        // datos del estudiante
         const estudianteSnapshot = await getDocs(collection(db, "estudiantes"));
         let estudianteData = null;
-        let estudianteID = null; // Variable para almacenar el ID del estudiante
+        let estudianteID = null;
 
         estudianteSnapshot.forEach((doc) => {
             if (doc.data().correo === correo) {
                 estudianteData = doc.data();
-                estudianteID = doc.id; // Obtener el ID del documento de Firestore
+                estudianteID = doc.id;
             }
         });
 
@@ -51,13 +44,13 @@ async function cargarDatosEstudiante() {
         // Guardar el estudianteID en localStorage
         localStorage.setItem("estudianteID", estudianteID);
 
-        // Mostrar nombre del estudiante
+        // Mostrar nombre
         document.getElementById("nombre-estudiante").innerText = estudianteData.nombre;
 
-        // Obtener cursos asignados
+        // Obtener cursos del estudiante creo
         const cursosAsignados = estudianteData.cursosAsignados;
         const cursosContainer = document.getElementById("cursos-container");
-        cursosContainer.innerHTML = ""; // Limpiar mensaje de carga
+        cursosContainer.innerHTML = "";
 
         for (const cursoId of cursosAsignados) {
             const cursoRef = doc(db, "cursos", cursoId);
@@ -72,13 +65,13 @@ async function cargarDatosEstudiante() {
                     <p>${cursoData.descripcion}</p>
                 `;
 
-                // Hacer que la tarjeta sea clickeable
+                //que se pueda dar click al nombre xd
                 cursoElement.addEventListener("click", () => {
                     localStorage.setItem("cursoSeleccionado", cursoId);
-                    window.location.href = "../examenes/examen.html";
-                    localStorage.setItem("cursoSeleccionado", cursoId);
-                    localStorage.setItem("nombreCurso", cursoData.nombre);
+                    localStorage.setItem("nombreCurso", cursoData.nombre); // Guardamos también el nombre del curso
+                    window.location.href = "../examenes/examen.html"; // Redirigimos a la página de exámenes
                 });
+                
 
                 cursosContainer.appendChild(cursoElement);
             } else {
