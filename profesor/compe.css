@@ -1,0 +1,71 @@
+/* Estilos básicos */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f9f9f9;
+    color: #333;
+  }
+  
+  /* Título principal */
+  h1 {
+    color: #444;
+    text-align: center;
+  }
+  
+  /* Contenedor de los estudiantes */
+  #estudiantesContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 20px;
+  }
+  
+  /* Estilo para cada estudiante */
+  .estudiante {
+    background-color: #fff;
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+  }
+  
+  /* Título de cada estudiante */
+  .estudiante h3 {
+    margin: 0;
+    color: #333;
+  }
+  
+  /* Lista de cursos asignados */
+  .estudiante ul {
+    padding-left: 20px;
+    list-style-type: disc;
+  }
+  
+  /* Elementos de la lista de cursos */
+  .estudiante ul li {
+    font-size: 14px;
+    color: #555;
+  }
+  
+  /* Efecto al pasar el ratón por encima del estudiante */
+  .estudiante:hover {
+    background-color: #f1f1f1;
+    cursor: pointer;
+  }
+  
+  /* Estilos adicionales de la página */
+  h1 {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 20px;
+  }
+  
+  /* Estilos para el contenedor de cada estudiante cuando está vacío */
+  #estudiantesContainer p {
+    text-align: center;
+    font-size: 18px;
+    color: #777;
+  }
+  

@@ -60,8 +60,8 @@ async function obtenerCursosYCalificaciones(profesorID) {
         if (cursoDoc.exists()) {
           cursosDetalles.push({
             id: cursoID,
-            nombre: cursoDoc.data().nombre || "Nombre no disponible", // Validar el nombre
-            descripcion: cursoDoc.data().descripcion || "Descripción no disponible" // Validar descripción
+            nombre: cursoDoc.data().nombre,
+            descripcion: cursoDoc.data().descripcion
           });
         }
       }
@@ -76,6 +76,7 @@ async function obtenerCursosYCalificaciones(profesorID) {
 
           // Mostrar el promedio ya almacenado en la base de datos
           let promedio = calificacionesCurso.promedio || "No disponible";
+          console.log(`Promedio para el curso ${cursoID}:`, promedio);
 
           // Ordenar los exámenes por su nombre
           const exámenesOrdenados = Object.entries(calificacionesCurso)
@@ -85,14 +86,21 @@ async function obtenerCursosYCalificaciones(profesorID) {
           // Verificar el estado de cada examen
           const exámenesConEstado = exámenesOrdenados.map(([examen, examenData]) => {
             const puntaje = examenData.puntaje;
+            console.log(`Puntaje para el examen ${examen}:`, puntaje);
             const puntajeNum = Number(puntaje);
-            const estadoExamen = !isNaN(puntajeNum) && puntajeNum >= 70 ? "Objetivo logrado" : "Objetivo no logrado";
+            if (isNaN(puntajeNum)) {
+              console.error(`Error: El puntaje "${puntaje}" no es un número válido`);
+            }
+            const estadoExamen = puntajeNum >= 70 ? "Objetivo logrado" : "Objetivo no logrado";
             return { examen, puntaje: puntajeNum, estadoExamen };
           });
 
-          // Verificar estado del promedio
+          // verificar promediod
           const promedioNum = Number(promedio);
-          const estadoPromedio = !isNaN(promedioNum) && promedioNum >= 70 ? "Aprobado" : "Desaprobado";
+          if (isNaN(promedioNum)) {
+            console.error(`Error: El promedio "${promedio}" no es un número válido`);
+          }
+          const estadoPromedio = promedioNum >= 70 ? "Aprobado" : "Desaprobado";
 
           calificaciones.push({
             cursoID: cursoID,
@@ -137,7 +145,6 @@ async function obtenerCursosYCalificaciones(profesorID) {
 
           // Mostrar los exámenes ordenados con su estado
           calificacion.calificaciones.forEach(({ examen, puntaje, estadoExamen }) => {
-            if (!examen || puntaje === undefined) return; // Ignorar exámenes sin datos
             const examenElement = document.createElement("p");
             examenElement.textContent = `${examen}: ${puntaje} - ${estadoExamen}`;
             calificacionesElement.appendChild(examenElement);
@@ -160,10 +167,25 @@ async function obtenerCursosYCalificaciones(profesorID) {
     console.error("Error al obtener los datos:", error);
   }
 }
+// Crear un botón para redirigir a la página de estudiantes
+const botonVerEstudiantes = document.createElement("button");
+botonVerEstudiantes.textContent = "Ver Estudiantes a mi cargo";
+botonVerEstudiantes.classList.add("boton-ver-estudiantes");
 
-const profesorID = localStorage.getItem("profesorID");
+// Añadir un evento de clic al botón para redirigir al nuevo HTML
+botonVerEstudiantes.addEventListener("click", () => {
+  // Aquí rediriges al nuevo archivo HTML donde verás los estudiantes
+  window.location.href = "compe.html";  // Cambia "estudiantes.html" por el nombre del archivo adecuado
+});
+
+// Agregar el botón a un contenedor, por ejemplo, a un div con id "acciones"
+const contenedorBoton = document.getElementById("acciones"); // Suponiendo que tienes un contenedor con id="acciones"
+contenedorBoton.appendChild(botonVerEstudiantes);
+
+// Suponiendo que tienes un formulario de inicio de sesión o un proceso de autenticación que determina el profesorID
+// Puedes usar `localStorage.getItem("profesorID")` o cualquier otro método para obtener el profesorID
+const profesorID = localStorage.getItem("profesorID");  // O el ID dinámico del profesor autenticado
 obtenerCursosYCalificaciones(profesorID);
-
 
 
 

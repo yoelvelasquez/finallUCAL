@@ -74,11 +74,13 @@ async function cargarExamenes() {
             examenesSnapshot.forEach((examenDoc) => {
                 const examenData = examenDoc.data();
                 const examenNombre = examenData.nombre;
+                const competencia = examenData.competencia || "No definida";
 
                 const examenElement = document.createElement("div");
                 examenElement.classList.add("examen-item");
                 examenElement.innerHTML = `
                     <h3>${examenNombre}</h3>
+                    <p><strong>Competencia:</strong> ${competencia}</p>
                     <p>Haz clic para ver las preguntas</p>
                 `;
 
@@ -194,8 +196,13 @@ async function calcularPromedio() {
     }
 }
 
+document.getElementById("btn-ver-competencias").addEventListener("click", () => {
+    window.location.href = "../estudiante/competencias.html"; // Puedes cambiar la ruta si lo necesitas
+});
+
+// Event listener para calcular el promedio
 document.getElementById("calcular-promedio").addEventListener("click", calcularPromedio);
 
-
+// Llamar a la función para cargar los exámenes y los datos cuando la página se cargue
 document.addEventListener("DOMContentLoaded", cargarExamenes);
 

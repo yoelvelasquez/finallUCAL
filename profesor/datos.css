@@ -1,0 +1,77 @@
+/* Estilos generales para el contenedor de competencias */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    margin: 0;
+    padding: 0;
+}
+
+/* Contenedor principal */
+#competencias-container {
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+}
+
+/* Estilo para la información del estudiante */
+#estudiante-info {
+    text-align: center;
+    padding: 10px;
+    font-size: 1.2em;
+    background-color: #e0f7fa;
+    border-radius: 5px;
+    margin-top: 20px;
+}
+
+/* Estilos para cada item de competencia */
+.competencia-item {
+    padding: 15px;
+    margin-bottom: 20px;
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Títulos de cada competencia */
+.competencia-item h3 {
+    margin: 0;
+    font-size: 1.4em;
+    color: #00796b;
+}
+
+/* Descripción de la competencia */
+.competencia-item p {
+    margin: 5px 0;
+    color: #555;
+}
+
+/* Mensajes de estado */
+.competencia-item p:last-child {
+    font-weight: bold;
+    color: #00796b;
+}
+
+/* Estilo del gráfico */
+canvas {
+    display: block;
+    width: 100%;
+    max-width: 800px;
+    margin: 40px auto;
+}
+
+/* Media Query para pantallas pequeñas */
+@media (max-width: 768px) {
+    #competencias-container {
+        padding: 15px;
+        width: 90%;
+    }
+
+    .competencia-item {
+        padding: 10px;
+    }
+}

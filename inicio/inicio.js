@@ -43,7 +43,7 @@ async function iniciarSesion() {
                 localStorage.setItem("estudianteID", estudianteSnapshot.docs[0].id);
 
 
-
+                
                 // Redirigir a la página de estudiante
                 setTimeout(() => {
                     window.location.href = "../estudiante/pagina.html";
@@ -70,7 +70,7 @@ async function iniciarSesion() {
                 // Guardar en el localStorage
                 localStorage.setItem("correo", correo);
                 localStorage.setItem("rol", "profesor");
-                localStorage.setItem("profesorID", profesorSnapshot.docs[0].id);
+                localStorage.setItem("profesorID", profesorSnapshot.docs[0].id); // Guardamos el ID del profesor
 
                 // Redirigir a la página de profesor
                 setTimeout(() => {
@@ -93,6 +93,7 @@ async function iniciarSesion() {
     }
 }
 
+// Escuchar el evento del formulario
 const loginForm = document.getElementById("loginForm");
 loginForm.addEventListener("submit", (event) => {
     event.preventDefault();
